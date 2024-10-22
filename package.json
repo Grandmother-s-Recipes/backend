@@ -1,0 +1,21 @@
+{
+  "name": "grandmothers-backend",
+  "version": "1.0.0",
+  "description": "The backend of grandmother's recipes",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate-latest": "",
+    "migrate-down": "",
+    "seed-data": "",
+    "build": "npm install",
+    "start": "NODE_ENV=production ./src/index.js"
+  },
+  "author": "Jackson Davide and Daniel",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "knex": "^3.1.0",
+    "pg": "^8.13.0"
+  }
+}
