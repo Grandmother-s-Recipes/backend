@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    knex.schema.createTable("user", (table) => {
+    return knex.schema.createTable("user", (table) => {
         table.increments('id').primary();
         table.string('username').unique().notNullable();
         table.string('password', 60).notNullable(); // length of 60 should be suitable for bcrypt

@@ -3,8 +3,8 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    knex.schema.createTable("favorite", (table) => {
-        table.increments(id).primary();
+    return knex.schema.createTable("favorite", (table) => {
+        table.increments('id').primary();
         table.string('recipe_id');
         table.integer('user_id')
             .unsigned()
