@@ -2,12 +2,16 @@ const express = require('express');
 const knex = require('./knex');  
 const axios = require('axios');  
 const cors = require('cors');
+const authRoutes = require('./auth.js');
+
 const app = express();
+
 
 require('dotenv').config();
 
 app.use(cors());
 app.use(express.json());
+app.use("/auth", authRoutes);
 
 app.get('/recipes', async (req, res) => {
     const { region } = req.query;
