@@ -118,7 +118,7 @@ app.post('/favorites', authenticateToken, async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        await knex('favorites').insert({
+        await knex('favorite').insert({
             user_id: user.id,
             recipe_id: recipe_id,
             region: region
@@ -138,7 +138,7 @@ app.get('/favorites', authenticateToken, async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        const favorites = await knex('favorites').where({ user_id: user.id });
+        const favorites = await knex('favorite').where({ user_id: user.id });
         return res.status(200).json({ favorites });
     } catch (error) {
         return res.status(500).json({ error: 'Error fetching favorites' });
@@ -160,7 +160,7 @@ app.put('/favorites/:recipe_id', authenticateToken, async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        const favorite = await knex('favorites')
+        const favorite = await knex('favorite')
             .where({ user_id: user.id, recipe_id: recipe_id })
             .first();
 
@@ -168,7 +168,7 @@ app.put('/favorites/:recipe_id', authenticateToken, async (req, res) => {
             return res.status(404).json({ error: 'Favorite not found' });
         }
 
-        await knex('favorites')
+        await knex('favorite')
             .where({ user_id: user.id, recipe_id: recipe_id })
             .update({ region: region });
 
@@ -188,7 +188,7 @@ app.delete('/favorites/:recipe_id', authenticateToken, async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        const favorite = await knex('favorites')
+        const favorite = await knex('favorite')
             .where({ user_id: user.id, recipe_id: recipe_id })
             .first();
 
@@ -196,7 +196,7 @@ app.delete('/favorites/:recipe_id', authenticateToken, async (req, res) => {
             return res.status(404).json({ error: 'Favorite not found' });
         }
 
-        await knex('favorites')
+        await knex('favorite')
             .where({ user_id: user.id, recipe_id: recipe_id })
             .del();
 
