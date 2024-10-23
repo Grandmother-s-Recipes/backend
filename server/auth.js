@@ -4,7 +4,7 @@ const authModel = require('./auth')
 
 
 
-const router = express.Router
+const router = express.Router();
 
 /**
  * REGISTRATION
@@ -112,3 +112,5 @@ router.post("/login", async(req, res) => {
         }))
     }
 });
+
+module.exports = router;
