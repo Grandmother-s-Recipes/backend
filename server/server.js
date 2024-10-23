@@ -204,3 +204,8 @@ app.delete('/favorites/:recipe_id', authenticateToken, async (req, res) => {
         return res.status(500).json({ error: 'Error removing favorite' });
     }
 });
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server in esecuzione sulla porta ${PORT}`);
+});
