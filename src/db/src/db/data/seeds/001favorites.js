@@ -1,14 +1,10 @@
-const bcrypt = require('bcrypt');
-
 exports.seed = async function(knex) {
-  await knex('users').del();
+  await knex('favorites').del();
 
-  const hashedPassword1 = await bcrypt.hash('password123', 10);
-  const hashedPassword2 = await bcrypt.hash('password456', 10);
-
-  await knex('users').insert([
-    { username: 'Jackson', password: hashedPassword1},
-    { username: 'Daniel', password: hashedPassword2}
+  await knex('favorites').insert([
+    { user_id: 1, recipe_id: 'spaghetti_bolognese', region: 'Emilia-Romagna' },
+    { user_id: 2, recipe_id: 'carbonara', region: 'Lazio' }
   ]);
 };
+
 
