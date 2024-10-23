@@ -6,9 +6,9 @@
     "scripts": {
         "start": "node ./server.server.js",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "migrate-latest": "",
-        "migrate-down": "",
-        "seed-data": "",
+        "migrate-latest": "knex migrate:latest",
+        "migrate-down": "knex migrate:rollback",
+        "seed-data": "knex seed:run",
         "build": "npm install"
     },
     "dependencies": {
