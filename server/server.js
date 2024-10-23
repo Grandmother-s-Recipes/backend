@@ -39,13 +39,14 @@ app.post('/register', async (req, res) => {
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        await knex('users').insert({
+        await knex('user').insert({
             username: username,
             password: hashedPassword
         });
 
         return res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ error: 'Error registering user' });
     }
 });
@@ -59,7 +60,7 @@ app.post('/login', async (req, res) => {
     }
 
     try {
-        const user = await knex('users').where({ username }).first();
+        const user = await knex('user').where({ username }).first();
         if (!user) {
             return res.status(400).json({ error: 'User not found' });
         }
@@ -112,7 +113,7 @@ app.post('/favorites', authenticateToken, async (req, res) => {
     }
 
     try {
-        const user = await knex('users').where({ username: req.user.username }).first();
+        const user = await knex('user').where({ username: req.user.username }).first();
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
@@ -132,7 +133,7 @@ app.post('/favorites', authenticateToken, async (req, res) => {
 
 app.get('/favorites', authenticateToken, async (req, res) => {
     try {
-        const user = await knex('users').where({ username: req.user.username }).first();
+        const user = await knex('user').where({ username: req.user.username }).first();
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
@@ -154,7 +155,7 @@ app.put('/favorites/:recipe_id', authenticateToken, async (req, res) => {
     }
 
     try {
-        const user = await knex('users').where({ username: req.user.username }).first();
+        const user = await knex('user').where({ username: req.user.username }).first();
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
@@ -182,7 +183,7 @@ app.delete('/favorites/:recipe_id', authenticateToken, async (req, res) => {
     const { recipe_id } = req.params;
 
     try {
-        const user = await knex('users').where({ username: req.user.username }).first();
+        const user = await knex('user').where({ username: req.user.username }).first();
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
