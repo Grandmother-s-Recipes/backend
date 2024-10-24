@@ -1,9 +1,9 @@
 require("dotenv").config({ path: "./.env"});
 
 module.exports = {
-    development: {
+
         client: "pg",
-        connection: {
+        connection: process.env.DATABASE_URL || {
             user: process.env.POSTGRES_USER,
             database: process.env.POSTGRES_DB,
             password: process.env.POSTGRES_PW
@@ -14,16 +14,16 @@ module.exports = {
         seeds: {
             directory: "./src/db/data/seeds"
         }
-    },
-
-    production: {
-        client: "pg",
-        connection: process.env.DATABASE_URL,
-        migrations: {
-            directory: "./src/db/data/migrations"
-        },
-        seeds: {
-            directory: "./src/db/data/seeds"
-        }
     }
-}
+
+//     production: {
+//         client: "pg",
+//         connection: process.env.DATABASE_URL,
+//         migrations: {
+//             directory: "./src/db/data/migrations"
+//         },
+//         seeds: {
+//             directory: "./src/db/data/seeds"
+//         }
+//     }
+// }
