@@ -180,8 +180,8 @@ app.put('/favorites/:recipe_id', authenticateToken, async (req, res) => {
 });*/
 
 
-app.delete('/favorites/:recipe_id', authenticateToken, async (req, res) => {
-    const { recipe_id } = req.params;
+app.delete('/favorites/:id', authenticateToken, async (req, res) => {
+    const { id } = req.params;
 
     try {
         const user = await knex('user').where({ username: req.user.username }).first();
@@ -190,7 +190,7 @@ app.delete('/favorites/:recipe_id', authenticateToken, async (req, res) => {
         }
 
         const favorite = await knex('favorite')
-            .where({ user_id: user.id, recipe_id: recipe_id })
+            .where({ id:id,user_id: user.id })
             .first();
 
         if (!favorite) {
@@ -198,7 +198,7 @@ app.delete('/favorites/:recipe_id', authenticateToken, async (req, res) => {
         }
 
         await knex('favorite')
-            .where({ user_id: user.id, recipe_id: recipe_id })
+            .where({ id:id,user_id: user.id})
             .del();
 
         return res.status(200).json({ message: 'Favorite removed successfully' });
