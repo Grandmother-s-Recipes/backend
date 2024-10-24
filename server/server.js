@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const MemoryStore = require('memorystore')(session);
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const knex = require('./knex'); 
@@ -17,7 +18,10 @@ app.use(session({
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, 
     secure: false // Imposta su `true` se usi HTTPS in produzione
-  }
+  },
+  store: new MemoryStore ({
+    checkPeriod: 86400000
+  }),
 }));
 
 
