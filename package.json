@@ -4,26 +4,30 @@
     "description": "",
     "main": "server.js",
     "scripts": {
-        "start": "node ./server.server.js",
+        "start": "node ./server/server.js",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "migrate-latest": "",
-        "migrate-down": "",
-        "seed-data": "",
+        "migrate-latest": "knex migrate:latest",
+        "migrate-down": "knex migrate:rollback",
+        "seed-data": "knex seed:run",
         "build": "npm install"
     },
     "dependencies": {
         "axios": "^1.7.7",
+        "bcrypt": "^5.1.1",
+        "body-parser": "^1.20.3",
+        "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "^4.21.1",
+        "jsonwebtoken": "^9.0.2",
         "knex": "^3.1.0",
         "pg": "^8.13.0"
     },
     "devDependencies": {
-        "nodemon": "^2.0.7",
         "@eslint/js": "^9.13.0",
         "eslint": "^9.13.0",
         "globals": "^15.11.0",
+        "nodemon": "^2.0.7",
         "prettier": "3.3.3"
     },
     "author": "Jackson Davide and Daniel",
