@@ -9,10 +9,10 @@ module.exports = {
             password: process.env.POSTGRES_PW
         },
         migrations: {
-            directory: "src/db/data/migrations"
+            directory: "./src/db/data/migrations"
         },
         seeds: {
-            directory: 'src/db/data/seeds'
+            directory: "./src/db/data/seeds"
         }
     },
 
@@ -20,10 +20,10 @@ module.exports = {
         client: "pg",
         connection: process.env.DATABASE_URL,
         migrations: {
-            directory: "src/db/data/migrations"
+            directory: "./src/db/data/migrations"
         },
         seeds: {
-            directory: "src/db/data/seeds"
+            directory: "./src/db/data/seeds"
         }
     }
 }
