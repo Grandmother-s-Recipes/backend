@@ -1,9 +1,11 @@
+require("dotenv").config({ path: "./.env"});
+
 module.exports = {
     development: {
         client: "pg",
         connection: {
-            user: process.env.POSTGRES_USER || "postgres",
-            database: process.env.POSTGRES_DB || "grandmother",
+            user: process.env.POSTGRES_USER,
+            database: process.env.POSTGRES_DB,
             password: process.env.POSTGRES_PW
         },
         migrations: {
