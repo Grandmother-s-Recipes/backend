@@ -146,6 +146,7 @@ app.get('/favorites', authenticateToken, async (req, res) => {
 });
 
 
+/*
 app.put('/favorites/:recipe_id', authenticateToken, async (req, res) => {
     const { recipe_id } = req.params;
     const { region } = req.body;
@@ -176,7 +177,7 @@ app.put('/favorites/:recipe_id', authenticateToken, async (req, res) => {
     } catch (error) {
         return res.status(500).json({ error: 'Error updating favorite' });
     }
-});
+});*/
 
 
 app.delete('/favorites/:recipe_id', authenticateToken, async (req, res) => {
