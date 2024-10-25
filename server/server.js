@@ -9,7 +9,6 @@ require('dotenv').config();
 
 const app = express();
 const API_URL = process.env.API_URL;
-console.log(API_URL);
 const corsOptions = {
   origin: API_URL,
   optionsSuccessStatus: 200,
@@ -92,9 +91,7 @@ app.post('/login', async (req, res) => {
     }
 
     req.session.userId = user.id;
-    return res.status(200).json({ 
-      message: 'Logged in successfully',
-    });
+    return res.status(200).json(user.id);
   } catch (error) {
     return res.status(500).json({ error: 'Error logging in' });
   }
@@ -112,14 +109,14 @@ app.post('/logout', (req, res) => {
 });
 
 
-app.post('/favorites', authenticateSession, async (req, res) => {
-  const { recipe_id, region } = req.body;
+app.post('/favorites', async (req, res) => {
+  const { user_id, recipe_id, region } = req.body;
 
   try {
     await knex('favorite').insert({
-      user_id: req.session.userId,
       recipe_id,
-      region
+      region,
+      user_id,
     });
 
     return res.status(201).json({ message: 'Favorite added successfully' });
@@ -129,12 +126,12 @@ app.post('/favorites', authenticateSession, async (req, res) => {
 });
 
 
-app.delete('/favorites/:id', authenticateSession, async (req, res) => {
+app.delete('/favorites/:id', async (req, res) => {
     const { id } = req.params; 
   
     try {
       const favorite = await knex('favorite')
-        .where({ id, user_id: req.session.userId }) 
+        .where({ id }) 
         .first();
   
       if (!favorite) {
@@ -142,7 +139,7 @@ app.delete('/favorites/:id', authenticateSession, async (req, res) => {
       }
   
       await knex('favorite')
-        .where({ id, user_id: req.session.userId }) 
+        .where({ id }) 
         .del();
   
       return res.status(200).json({ message: 'Favorite removed successfully' });
@@ -153,12 +150,11 @@ app.delete('/favorites/:id', authenticateSession, async (req, res) => {
   });
   
 
-app.get('/favorites', authenticateSession, async (req, res) => {
+app.get('/favorites', async (req, res) => {
   try {
     const favorites = await knex('favorite')
-      .where({ user_id: req.session.userId });
-
-    return res.status(200).json({ favorites });
+      .where({ user_id: req.query.user_id });
+    return res.status(200).json(favorites);
   } catch (error) {
     return res.status(500).json({ error: 'Error fetching favorites' });
   }
