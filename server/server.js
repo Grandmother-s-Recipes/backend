@@ -3,11 +3,20 @@ const session = require('express-session');
 const MemoryStore = require('memorystore')(session);
 const bcrypt = require('bcrypt');
 const axios = require('axios');
-const knex = require('./knex'); 
+const knex = require('./knex');
 const cors = require('cors');
+require('dotenv').config();
+
 const app = express();
+const API_URL = process.env.API_URL;
+console.log(API_URL);
+const corsOptions = {
+  origin: API_URL,
+  optionsSuccessStatus: 200,
+  credentials: true
+};
 
-
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -53,12 +62,15 @@ app.post('/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(hashedPassword);
     await knex('user').insert({
       username,
       password: hashedPassword
     });
 
-    return res.status(201).json({ message: 'User registered successfully' });
+    return res.status(201).json({ 
+      message: 'User registered successfully',
+    });
   } catch (error) {
     return res.status(500).json({ error: 'Error registering user' });
   }
@@ -80,7 +92,9 @@ app.post('/login', async (req, res) => {
     }
 
     req.session.userId = user.id;
-    return res.status(200).json({ message: 'Logged in successfully' });
+    return res.status(200).json({ 
+      message: 'Logged in successfully',
+    });
   } catch (error) {
     return res.status(500).json({ error: 'Error logging in' });
   }
