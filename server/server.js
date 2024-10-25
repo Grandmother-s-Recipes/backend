@@ -26,6 +26,10 @@ app.use(session({
   }),
 }));
 
+//default path
+app.get("", (req, res) => {
+  res.status(200).send("This is the server for Grandmother's Recipes.");
+});
 
 const authenticateSession = (req, res, next) => {
   if (!req.session.userId) {
