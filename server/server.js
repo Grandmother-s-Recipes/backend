@@ -4,11 +4,13 @@ const MemoryStore = require('memorystore')(session);
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const knex = require('./knex'); 
+const cors = require('cors');
 const app = express();
 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 
 app.use(session({
