@@ -4,11 +4,12 @@ const bcrypt = require('bcrypt');
 const axios = require('axios');
 const knex = require('./knex');
 const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
-
+const API_URL = process.env.API_URL;
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: API_URL,
   optionsSuccessStatus: 200,
   credentials: true
 };
