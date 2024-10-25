@@ -8,6 +8,7 @@ require('dotenv').config();
 
 const app = express();
 const API_URL = process.env.API_URL;
+console.log(API_URL);
 const corsOptions = {
   origin: API_URL,
   optionsSuccessStatus: 200,
