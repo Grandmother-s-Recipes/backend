@@ -35,6 +35,7 @@ app.use(session({
   }),
 }));
 
+
 const authenticateSession = (req, res, next) => {
   if (!req.session.userId) {
     return res.status(401).json({ error: 'Not authenticated' });
@@ -73,6 +74,7 @@ app.post('/register', async (req, res) => {
       password: hashedPassword
     });
 
+
     const user = await knex('user').where({ username }).first();
 
     req.session.userId = user.id;
@@ -83,7 +85,6 @@ app.post('/register', async (req, res) => {
         message: 'User registered successfully',
       });
     });
-
 
   } catch (error) {
     return res.status(500).json({ error: 'Error registering user' });
@@ -105,6 +106,7 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
 
+
     // apparently regenerating the session is good practice
     // to guard against "session fixation"
     req.session.regenerate(function (err) {
@@ -119,6 +121,7 @@ app.post('/login', async (req, res) => {
       });
     });
     
+
   } catch (error) {
     return res.status(500).json({ error: 'Error logging in' });
   }
