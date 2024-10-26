@@ -5,12 +5,13 @@ const bcrypt = require('bcrypt');
 const axios = require('axios');
 const knex = require('./knex');
 const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
-
-
+const API_URL = process.env.API_URL;
+console.log(API_URL);
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: API_URL,
   optionsSuccessStatus: 200,
   credentials: true
 };
@@ -26,13 +27,13 @@ app.use(session({
   saveUninitialized: false, 
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, 
-    secure: false // Imposta su `true` se usi HTTPS in produzione
+    secure: false, // Imposta su `true` se usi HTTPS in produzione
+    sameSite: 'lax'
   },
   store: new MemoryStore ({
     checkPeriod: 86400000
   }),
 }));
-
 
 const authenticateSession = (req, res, next) => {
   if (!req.session.userId) {
@@ -40,6 +41,16 @@ const authenticateSession = (req, res, next) => {
   }
   next();
 };
+
+//default path
+app.get("/", (req, res) => {
+  res.status(200).send("This is the server for Grandmother's Recipes.");
+});
+
+app.get("/", authenticateSession, (req, res) => {
+  // this is only called when there is an authenticated user due to authenticateSession
+  res.status(200).json({ message: "This is the server for the Grandmother's Recipes", session: req.session.userId});
+})
 
 
 app.post('/register', async (req, res) => {
@@ -56,12 +67,24 @@ app.post('/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
     await knex('user').insert({
       username,
       password: hashedPassword
     });
 
-    return res.status(201).json({ message: 'User registered successfully' });
+    const user = await knex('user').where({ username }).first();
+
+    req.session.userId = user.id;
+    console.log("This is the session info:", req.session);
+    req.session.save(function (err) {
+      if (err) next(err);
+      return res.status(201).json({ 
+        message: 'User registered successfully',
+      });
+    });
+
+
   } catch (error) {
     return res.status(500).json({ error: 'Error registering user' });
   }
@@ -82,8 +105,20 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
 
-    req.session.userId = user.id;
-    return res.status(200).json({ message: 'Logged in successfully' });
+    // apparently regenerating the session is good practice
+    // to guard against "session fixation"
+    req.session.regenerate(function (err) {
+      if (err) next(err);
+
+      req.session.userId = user.id;
+
+      req.session.save(function (err) {
+        return res.status(200).json({ 
+          message: 'Logged in successfully',
+        });
+      });
+    });
+    
   } catch (error) {
     return res.status(500).json({ error: 'Error logging in' });
   }
