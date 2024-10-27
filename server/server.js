@@ -81,6 +81,7 @@ app.post('/register', async (req, res) => {
     req.session.save(function (err) {
       if (err) next(err);
       return res.status(201).json({ 
+        user_id: user.id,
         message: 'User registered successfully',
       });
     });
@@ -115,7 +116,8 @@ app.post('/login', async (req, res) => {
       req.session.userId = user.id;
 
       req.session.save(function (err) {
-        return res.status(200).json({ 
+        return res.status(200).json({
+          user_id: user.id,
           message: 'Logged in successfully',
         });
       });
