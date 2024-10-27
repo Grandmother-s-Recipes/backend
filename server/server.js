@@ -47,9 +47,10 @@ app.get("/", (req, res) => {
   res.status(200).send("This is the server for Grandmother's Recipes.");
 });
 
-app.get("/", authenticateSession, (req, res) => {
+app.get("/session", authenticateSession, (req, res) => {
   // this is only called when there is an authenticated user due to authenticateSession
-  res.status(200).json({ message: "This is the server for the Grandmother's Recipes", session: req.session.userId});
+  const userId = req.session.userId;
+  res.status(200).json({ userId });
 })
 
 
@@ -77,7 +78,6 @@ app.post('/register', async (req, res) => {
     const user = await knex('user').where({ username }).first();
 
     req.session.userId = user.id;
-    console.log("This is the session info:", req.session);
     req.session.save(function (err) {
       if (err) next(err);
       return res.status(201).json({ 
