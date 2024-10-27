@@ -28,7 +28,7 @@ app.use(session({
   saveUninitialized: false, 
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, 
-    secure: false, // Imposta su `true` se usi HTTPS in produzione
+    secure: true, // Imposta su `true` se usi HTTPS in produzione
     sameSite: 'lax'
   },
   store: new MemoryStore ({
