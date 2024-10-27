@@ -8,6 +8,8 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
+app.set("trust proxy", 1);
+
 const API_URL = process.env.API_URL;
 const corsOptions = {
   origin: API_URL,
@@ -26,8 +28,8 @@ app.use(session({
   saveUninitialized: false, 
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, 
-    secure: false, // Imposta su `true` se usi HTTPS in produzione
-    sameSite: 'lax'
+    secure: true, // Imposta su `true` se usi HTTPS in produzione
+    sameSite: 'none'
   },
   store: new MemoryStore ({
     checkPeriod: 86400000
