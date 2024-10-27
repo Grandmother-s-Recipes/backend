@@ -29,7 +29,7 @@ app.use(session({
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, 
     secure: true, // Imposta su `true` se usi HTTPS in produzione
-    sameSite: 'lax'
+    sameSite: 'none'
   },
   store: new MemoryStore ({
     checkPeriod: 86400000
