@@ -202,7 +202,13 @@ app.get('/recipes', async (req, res) => {
     return res.status(400).json({ error: 'Region parameter is required' });
   }
 
-  const apiUrl = `https://api.api-ninjas.com/v1/recipe?query=${region}`;
+  let validatedRegion = region;
+
+  if (validatedRegion.includes("(")) {
+    validatedRegion = validatedRegion.split('(')[0];
+  }
+
+  const apiUrl = `https://api.api-ninjas.com/v1/recipe?query=${validatedRegion}`;
 
   try {
     const response = await axios.get(apiUrl, {
