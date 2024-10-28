@@ -7,7 +7,7 @@ exports.seed = async function(knex) {
   const hashedPassword2 = await bcrypt.hash('password', 10);
   const hashedPassword3 = await bcrypt.hash('password', 10);
 
-  await knex('user').insert([
+  await knex('granduser').insert([
     {username: 'laurence', password: hashedPassword1},
     {username: 'jason', password: hashedPassword2},
     {username: 'vicente', password: hashedPassword3}
