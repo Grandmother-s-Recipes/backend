@@ -64,20 +64,20 @@ app.post('/register', async (req, res) => {
   }
 
   try {
-    const existingUser = await knex('user').where({ username }).first();
+    const existingUser = await knex('granduser').where({ username }).first();
     if (existingUser) {
       return res.status(409).json({ error: 'Username already exists' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await knex('user').insert({
+    await knex('granduser').insert({
       username,
       password: hashedPassword
     });
 
 
-    const user = await knex('user').where({ username }).first();
+    const user = await knex('granduser').where({ username }).first();
 
     req.session.userId = user.id;
     req.session.save(function (err) {
@@ -98,7 +98,7 @@ app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const user = await knex('user').where({ username }).first();
+    const user = await knex('granduser').where({ username }).first();
     if (!user) {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
