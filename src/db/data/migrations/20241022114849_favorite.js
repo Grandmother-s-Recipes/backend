@@ -10,7 +10,7 @@ exports.up = function(knex) {
         table.integer('user_id')
             .unsigned()
             .references('id')
-            .inTable('user')
+            .inTable('granduser')
             .onDelete('CASCADE'); // foreign key
       });
 };
