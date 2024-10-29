@@ -6,6 +6,7 @@ const axios = require('axios');
 const knex = require('./knex');
 const cors = require('cors');
 require('dotenv').config();
+const openaiRequest = require("./openairequest.js");
 
 const app = express();
 app.set("trust proxy", 1);
@@ -228,7 +229,20 @@ app.get('/recipes', async (req, res) => {
   }
 });
 
+app.get("/askgrandma", async (req,res) => {
+  const { region } = req.query;
 
+  if (!region) {
+    return res.status(400).json({ error: 'Region parameter is required' });
+  }
+
+  try {
+    const grandmaReply = await openaiRequest("Tell me about the recipes of " + region);
+    res.status(200).json({ response: grandmaReply });
+  } catch (err) {
+    res.status(500).send("Failed to get a reply with the following error: " + err);
+  }
+});
 
 const PORT = process.env.PORT || 3000;
 
