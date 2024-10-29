@@ -147,13 +147,16 @@ app.post('/favorites', async (req, res) => {
   const { user_id, recipe_id, region } = req.body;
 
   try {
-    await knex('favorite').insert({
-      recipe_id,
-      region,
-      user_id,
-    });
-
-    return res.status(201).json({ message: 'Favorite added successfully' });
+    const favorites = await knex('favorite')
+      .where({ user_id: req.body.user_id });
+    if (!favorites.map(fav => fav.recipe_id).includes(recipe_id)) {
+      await knex('favorite').insert({
+        recipe_id,
+        region,
+        user_id,
+      });
+      return res.status(201).json({ message: 'Favorite added successfully' });
+    } else {return res.status(400).json({ message: 'Favorite already added' });}
   } catch (error) {
     return res.status(500).json({ error: 'Error adding favorite' });
   }
