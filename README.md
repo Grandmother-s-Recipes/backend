@@ -1,7 +1,4 @@
-# backend
-This is the backend readme file
+# Grandmother's Recipes Backend Repository
 
-Our backend is hosted at:
-https://grandmothers-server.onrender.com
-LEGACY
+Live Link:
 https://grandma-backend.onrender.com
